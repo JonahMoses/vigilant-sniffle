@@ -1,14 +1,4 @@
-require 'csv'
-
-module Parser
-  extend self
-
-  def accounts(file)
-  end
-
-  def journal(file)
-  end
-end
+require_relative('parser')
 
 class Bank
   attr_reader :accounts
@@ -16,10 +6,18 @@ class Bank
   def initialize
     @accounts = []
   end
+
+  def add_accounts(new_accounts)
+    @accounts = @accounts + new_accounts
+  end
 end
 
 class Account
-  # stuff
+  attr_reader :id, :name
+  def initialize(id, name)
+    @id = id
+    @name = name
+  end
 end
 
 class Journal
@@ -28,19 +26,35 @@ class Journal
   def initialize
     @transactions = []
   end
-  # stuff
+
+  def add_transactions(new_transactions)
+    @transactions = @transactions + new_transactions
+  end
+
+  def balance
+    # make sure this is balanced
+    # debit - credit
+  end
 end
 
 class Transaction
-  # stuff
+  attr_reader :account_id, :period, :debit, :credit
+  def initialize(account_id, period, debit, credit)
+    @account_id = account_id
+    @period = period # FORMAT DATE: JAN-16
+    @debit = debit.to_i
+    @credit = credit.to_i
+  end
 end
 
 
 bank = Bank.new
 journal = Journal.new
 
-accounts = Parser.accounts("accounts.csv")
-transactions = Parser.journal("journal.csv")
+accounts = Parser.accounts("#{File.dirname(__FILE__)}/accounts.csv")
+transactions = Parser.journal("#{File.dirname(__FILE__)}/journal.csv")
 
 bank.add_accounts(accounts)
+
 journal.add_transactions(transactions)
+journal.balance
