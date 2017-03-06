@@ -39,6 +39,7 @@ end
 
 class Transaction
   attr_reader :account_id, :period, :debit, :credit
+
   def initialize(account_id, period, debit, credit)
     @account_id = account_id
     @period = period # FORMAT DATE: JAN-16
